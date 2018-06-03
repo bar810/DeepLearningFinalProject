@@ -6,12 +6,12 @@ app = Flask(__name__)
 api = Api(app)
 
 class Query(Resource):
-    def get(self):
+    def get(self,arg):
         result="APPLY HERE SOME FUNCTION"
+        print("input: "+arg)
         print("function return result: "+result)
         return result,200
 
-# QUERY SHOULD SEND TO 127.0.0.1:5000/
-#TODO :: add param
-api.add_resource(Query, "/")
+# QUERY SHOULD SEND TO 127.0.0.1:5000/PATH_TO_INPUT
+api.add_resource(Query, "/<string:arg>")
 app.run(debug=True)
