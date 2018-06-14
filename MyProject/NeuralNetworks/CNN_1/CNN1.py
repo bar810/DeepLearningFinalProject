@@ -53,22 +53,24 @@ def train():
 
     test_datagen = ImageDataGenerator(rescale = 1./255)
 
-    training_set = train_datagen.flow_from_directory('C:\\Users\\Bar Brownshtein\\imagesTest',
+    training_set = train_datagen.flow_from_directory('/Users/barbrownshtein/Documents/workspace/imagesTest',
                                                      target_size = (64, 64),
                                                      batch_size = 32,
                                                      class_mode = 'binary')
 
-    test_set = test_datagen.flow_from_directory('C:\\Users\\Bar Brownshtein\\imagesTest',
+    test_set = test_datagen.flow_from_directory('/Users/barbrownshtein/Documents/workspace/imagesTest',
                                                 target_size = (64, 64),
                                                 batch_size = 32,
                                                 class_mode = 'binary')
 
     classifier.fit_generator(training_set,
                              steps_per_epoch = 8000,
-                             epochs = 25,
+                             epochs = 1,
                              validation_data = test_set,
                              validation_steps = 2000)
-
+    scores = classifier.evaluate(test_set, verbose=1)
+    print('Test loss:', scores[0])
+    print('Test accuracy:', scores[1])
 # def predict(arg):
 #     print("the arg is: "+arg)
 #     return "done"

@@ -1,13 +1,10 @@
-import MyProject.NeuralNetworks.CIFAR10.CIFAR10_CNN as cifar10
-import MyProject.NeuralNetworks.CNN_1.CNN1 as cnn1
+import MyProject.NeuralNetworks.Classifier.food_cnn_predict_by_query as classfier
 
 
 def runPrediction(arg):
     # CHECK FOOD - NO - FOOD
-    retval= cnn1.predict(arg)
-    if retval=="NO_FOOD":
-        return "NO_FOOD"
+    # TODO
 
     # CLASSIFY THE INPUT
-    retval=cifar10.predict(arg)
+    retval=classfier.predict(arg)
     return retval

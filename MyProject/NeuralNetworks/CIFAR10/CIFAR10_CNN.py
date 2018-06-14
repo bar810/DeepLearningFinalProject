@@ -5,22 +5,61 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
+from keras.models import load_model
+from scipy.misc import imread, imresize
+import numpy as np
 import os
+
+SAVE_DIR = os.path.join(os.getcwd(), 'saved_models')
+MODEL_NAME = 'keras_cifar10_trained_model.h5'
+MODEL_PATH = SAVE_DIR + "/" + MODEL_NAME
 
 def train():
     batch_size = 32
     num_classes = 10
-    epochs = 50
+    epochs = 1
     data_augmentation = False
     num_predictions = 20
-    save_dir = os.path.join(os.getcwd(), 'saved_models')
-    model_name = 'keras_cifar10_trained_model.h5'
+
 
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
+
+    # TODO :: READ MY OWN DATA
+
+
+    # this is the augmentation configuration we will use for training
+    train_datagen = ImageDataGenerator(
+        rescale=1. / 255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+    # this is the augmentation configuration we will use for testing:
+    # only rescaling
+    test_datagen = ImageDataGenerator(rescale=1. / 255)
+
+    # this is a generator that will read pictures found in
+    # subfolers of 'data/train', and indefinitely generate
+    # batches of augmented image data
+    train_generator = train_datagen.flow_from_directory(
+        '/Users/barbrownshtein/Documents/workspace/imagesTest/training_set',  # this is the target directory
+        target_size=(150, 150),  # all images will be resized to 150x150
+        batch_size=batch_size,
+        class_mode='binary')  # since we use binary_crossentropy loss, we need binary labels
+
+    # this is a similar generator, for validation data
+    validation_generator = test_datagen.flow_from_directory(
+        '/Users/barbrownshtein/Documents/workspace/imagesTest/test_set',
+        target_size=(150, 150),
+        batch_size=batch_size,
+        class_mode='binary')
+
+
+    # TODO :: FINISH TO READ MY DATA
 
     # Convert class vectors to binary class matrices.
     y_train = keras.utils.to_categorical(y_train, num_classes)
@@ -96,9 +135,9 @@ def train():
                             workers=4)
 
     # Save model and weights
-    if not os.path.isdir(save_dir):
-        os.makedirs(save_dir)
-    model_path = os.path.join(save_dir, model_name)
+    if not os.path.isdir(SAVE_DIR):
+        os.makedirs(SAVE_DIR)
+    model_path = os.path.join(SAVE_DIR, MODEL_NAME)
     model.save(model_path)
     print('Saved trained model at %s ' % model_path)
 
@@ -111,4 +150,17 @@ def train():
 #     print("the arg is: "+arg)
 #     return "done"
 
+def predict(str):
+    model = load_model(MODEL_PATH)
+    x = imread(str, mode='RGB')
+    x = imresize(x, (32, 32))
+    x = np.invert(x)
+    x = x.reshape(-1, 32, 32, 3)
+    print(x)
+    res=model.predict(x)
+    print(res)
+
+
+
 train()
+#predict("/Users/barbrownshtein/Documents/workspace/imagesTest/test/NoFood/0_54.jpg")
