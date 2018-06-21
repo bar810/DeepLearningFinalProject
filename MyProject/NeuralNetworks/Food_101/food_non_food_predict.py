@@ -24,7 +24,6 @@ def predict(inputUrl):
     global url
 
     url = (inputUrl)
-    print(url)
     response = requests.get(url)
     test_image = Image.open(BytesIO(response.content))
     put_image = test_image.resize((400, 400))
@@ -35,7 +34,6 @@ def predict(inputUrl):
     with graph.as_default():
         result = model.predict_on_batch(test_image)
 
-    print(result)
     if result[0][0] == 1:
         return  'NonFood'
     elif result[0][1] == 1:

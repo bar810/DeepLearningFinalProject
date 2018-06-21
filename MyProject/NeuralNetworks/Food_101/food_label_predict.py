@@ -15,8 +15,8 @@ import  tensorflow as tf
 # root = Tk()
 global graph
 img_width, img_height = 128, 128
-model_path = '../../MyProject/NeuralNetworks/Food_101/models/model_food_label.h5'
-model_weights_path = '../../MyProject/NeuralNetworks/Food_101/models/weights_food_label.h5'
+model_path = '../../MyProject/NeuralNetworks/Food_101/models/model_food_label_frize.h5'
+model_weights_path = '../../MyProject/NeuralNetworks/Food_101/models/weights_food_label_frize.h5'
 model = load_model(model_path)
 model.load_weights(model_weights_path)
 graph=tf.get_default_graph()
@@ -25,7 +25,6 @@ def predict(inputUrl):
     global url
 
     url = (inputUrl)
-    print(url)
     response = requests.get(url)
     test_image = Image.open(BytesIO(response.content))
     put_image = test_image.resize((400, 400))
@@ -36,12 +35,11 @@ def predict(inputUrl):
     with graph.as_default():
         result = model.predict_on_batch(test_image)
 
-    print(result)
     if result[0][0] == 1:
         return  'Deserts'
     elif result[0][1] == 1:
         return 'Meet'
     elif result[0][2] == 1:
-        return 'Frize'
+        return 'FrenchFrize'
     elif result[0][3] == 1:
         return 'Vegetarian'

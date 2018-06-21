@@ -14,10 +14,15 @@ api = Api(app)
 class Query(Resource):
     def get(self,arg):
         arg=(request.args.get("url"))
-        print(arg)
+        if not (arg.startswith("http")):
+            print("invalid input")
+            res="invalid"
+            return res,200
+        print("the input is: "+arg)
         # CHECK IF THE PICTURE IS A FOOD OR NOT
         res=foodNonFoodClassifier.predict(arg)
         if(res!='Food'):
+            print("Non food input")
             return res,200
         # CHECK WHAT KIND OF FOOD
         res=foodClassifier.predict(arg)
