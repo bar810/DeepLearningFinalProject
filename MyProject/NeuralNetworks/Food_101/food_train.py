@@ -11,7 +11,7 @@ import os
 model = Sequential()
 BATCH_SIZE=32
 CLASSES = 2
-EPOCHS = 5
+EPOCHS = 1
 MODEL_SAVE_PATH='./models/model_food_101.h5'
 MODEL_SAVE_PATH_WEIGHTS='./models/weights_food_101.h5'
 TEST_SET_PATH='./data_set/training_set'
@@ -63,3 +63,4 @@ if not os.path.exists(target_dir):
     os.mkdir(target_dir)
 model.save(MODEL_SAVE_PATH)
 model.save_weights(MODEL_SAVE_PATH_WEIGHTS)
+plt.savefig('graph.png')

@@ -11,7 +11,7 @@ import keras
 model = Sequential()
 BATCH_SIZE=32
 CLASSES = 5
-EPOCHS = 5
+EPOCHS = 20
 MODEL_SAVE_PATH='./models/model_cifar_10.h5'
 MODEL_SAVE_PATH_WEIGHTS='./models/weights_cifar_10.h5'
 TEST_SET_PATH='./data_set/training_set'
@@ -82,3 +82,4 @@ if not os.path.exists(target_dir):
     os.mkdir(target_dir)
 model.save(MODEL_SAVE_PATH)
 model.save_weights(MODEL_SAVE_PATH_WEIGHTS)
+plt.savefig('graph.png')
