@@ -49,7 +49,6 @@ history= model.fit_generator(training_set, steps_per_epoch=800 / 32, epochs=EPOC
 score=model.evaluate_generator(test_set)
 print("\nTest score:", score[0])
 print('Test accuracy:', score[1])
-print("finish")
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
 plt.title('Model Accuracy')
@@ -57,7 +56,6 @@ plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train','test'], loc='upper left')
 plt.show()
-print("finish2")
 
 # save model
 target_dir = './models/'
